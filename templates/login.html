@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pronunciation Coach - Login</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <span class="eyebrow">AI Pronunciation Coach</span>
+        <h1>Welcome 🎙️</h1>
+        <p>Who is learning today?</p>
+        <div class="profile-selector">
+            <div class="profile-card" onclick="selectProfile('kid')">
+                <div class="profile-emoji">🎈</div>
+                <h2>I'm a Kid</h2>
+                <p>Fun games & easy words!</p>
+            </div>
+            <div class="profile-card" onclick="selectProfile('adult')">
+                <div class="profile-emoji">🎓</div>
+                <h2>I'm an Adult</h2>
+                <p>Professional training & accents.</p>
+            </div>
+        </div>
+        <div id="name-input-section" class="hidden">
+            <input type="text" id="username" placeholder="What's your name?">
+            <button id="start-btn" onclick="startApp()">Start Learning 🚀</button>
+        </div>
+    </div>
+    <script>
+        let selectedRole = '';
+        function selectProfile(role) {
+            selectedRole = role;
+            document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById('name-input-section').classList.remove('hidden');
+            document.getElementById('username').focus();
+        }
+        function startApp() {
+            const name = document.getElementById('username').value.trim();
+            if (!name) {
+                alert("Please enter your name!");
+                return;
+            }
+            localStorage.setItem('userRole', selectedRole);
+            localStorage.setItem('userName', name);
+            window.location.href = '/app';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pronunciation Coach</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <button class="nav-btn active" data-tab="practice">Practice</button>
+            <button class="nav-btn" data-tab="adults">Adults</button>
+            <button class="nav-btn" data-tab="kids">Kids</button>
+            <button class="nav-btn" data-tab="games">Games</button>
+            <button class="nav-btn" data-tab="progress">Progress</button>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- ═══════════════════════════════════
+             PRACTICE MODE
+        ════════════════════════════════════ -->
+        <div id="practice" class="tab-content active">
+            <span class="eyebrow">Speak &middot; Analyse &middot; Refine</span>
+            <h1>Pronunciation Coach</h1>
+
+            <div class="input-section">
+                <label for="custom-phrase">Type a phrase to practice</label>
+                <div class="input-group">
+                    <input type="text" id="custom-phrase" placeholder="Type a phrase to practice...">
+                    <button id="listen-btn" title="Listen to pronunciation">🔊</button>
+                </div>
+            </div>
+
+            <!-- Sentence library pills — built by practice.js -->
+            <div id="sentence-library" class="sentence-library"></div>
+
+            <div class="controls">
+                <button id="record-btn">
+                    <span class="waveform"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+                    Record
+                </button>
+                <p id="status">Ready to record</p>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loading-indicator" class="hidden loading-indicator">
+                <span class="waveform live"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+                <span>Analysing your pronunciation...</span>
+            </div>
+
+            <div id="results-area" class="hidden">
+                <div class="score-ring" id="res-score-ring" style="--pct:0">
+                    <span class="score-ring-value" id="res-score">0%</span>
+                </div>
+                <p id="res-feedback"></p>
+
+                <!-- Words / Sounds / Syllables score bars -->
+                <div id="score-bars"></div>
+
+                <!-- "7 of 9 words correct" style summary -->
+                <div id="res-summary"></div>
+
+                <!-- Word-by-word diff with syllable chips -->
+                <div class="diff-container" id="diff-output"></div>
+
+                <!-- Sounds to focus on -->
+                <div id="weak-sounds-panel" class="weak-sounds-panel"></div>
+
+                <button id="try-again-btn" class="secondary-btn">Try Again</button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             ADULTS MODE
+        ════════════════════════════════════ -->
+        <div id="adults" class="tab-content">
+            <h1>Adults Training</h1>
+
+            <div id="adults-scenario" class="sub-mode active">
+                <span class="eyebrow">Real-world Practice</span>
+                <h2>Choose a scenario</h2>
+                <p>Pick a real-life situation and practice the exact phrase you'd need.</p>
+                <!-- Category headers + scenario cards are built by adults.js from ADULTS_CONTENT -->
+            </div>
+
+            <!-- Active practice area for Adults -->
+            <div id="adults-active-area" class="hidden">
+                <h2 id="adults-target-text">Target</h2>
+                <div class="controls-row">
+                    <button id="adults-listen-btn" class="icon-btn">🔊 Listen</button>
+                    <button id="adults-record-btn" class="action-btn">
+                        <span class="waveform"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+                        Record
+                    </button>
+                </div>
+
+                <div id="adults-feedback" class="hidden">
+                    <div class="score-ring" id="adults-score-ring" style="--pct:0">
+                        <span class="score-ring-value" id="adults-score"></span>
+                    </div>
+                    <p id="adults-message"></p>
+
+                    <!-- Words / Sounds / Syllables score bars -->
+                    <div id="adults-score-bars"></div>
+
+                    <!-- "7 of 9 words correct" style summary -->
+                    <div id="adults-summary"></div>
+
+                    <!-- Word-by-word diff with syllable chips -->
+                    <div class="diff-container" id="adults-diff-output"></div>
+
+                    <!-- Sounds to focus on -->
+                    <div id="adults-weak-sounds" class="weak-sounds-panel"></div>
+
+                    <!-- Recommended exercises based on weak sounds -->
+                    <div id="adults-recommend"></div>
+
+                    <button id="adults-try-again-btn" class="secondary-btn">🔄 Try Again</button>
+                </div>
+
+                <button id="adults-back-btn" class="secondary-btn">Back</button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             KIDS MODE
+        ════════════════════════════════════ -->
+        <div id="kids" class="tab-content">
+            <h1>Kids Zone 🎈</h1>
+
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="easy">Easy 🟢</button>
+                <button class="mode-btn" data-mode="medium">Medium 🟡</button>
+                <button class="mode-btn" data-mode="hard">Hard 🔴</button>
+            </div>
+
+            <!-- Easy Mode -->
+            <div id="kids-easy" class="sub-mode active">
+                <!-- Word cards are built by kids.js from KIDS_WORDS.easy -->
+            </div>
+
+            <!-- Medium Mode -->
+            <div id="kids-medium" class="sub-mode hidden">
+                <!-- Word cards are built by kids.js from KIDS_WORDS.medium -->
+            </div>
+
+            <!-- Hard Mode -->
+            <div id="kids-hard" class="sub-mode hidden">
+                <!-- Word cards are built by kids.js from KIDS_WORDS.hard -->
+            </div>
+
+            <!-- Active Practice Area for Kids -->
+            <div id="kids-active-area" class="hidden">
+                <div class="emoji-display" id="kids-active-emoji"></div>
+                <h2 id="kids-target-word">Word</h2>
+
+                <!-- Syllable chips shown before recording -->
+                <div id="kids-syllable-row" class="kids-syllable-row"></div>
+
+                <p class="kids-instruction">👂 First, listen to the word. Then click the microphone and say it!</p>
+
+                <div class="controls-row">
+                    <button id="kids-listen-btn" class="big-btn">👂 Listen</button>
+                    <button id="kids-record-btn" class="big-btn record-btn">
+                        <span class="waveform"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+                        Say It!
+                    </button>
+                </div>
+
+                <button id="kids-back-btn" class="secondary-btn">⬅️ Back to Words</button>
+
+                <div id="kids-feedback" class="hidden">
+                    <div id="kids-stars"></div>
+                    <p id="kids-message"></p>
+                    <div id="kids-practice-together"></div>
+                    <button id="kids-try-again-btn" class="big-btn" style="margin-top: 20px;">🔄 Try Again</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             GAMES MODE
+        ════════════════════════════════════ -->
+        <div id="games" class="tab-content">
+            <h1>Word Search 🧩</h1>
+
+            <div class="mode-selector">
+                <button class="game-diff-btn active" data-diff="easy">Easy (5x5)</button>
+                <button class="game-diff-btn" data-diff="medium">Medium (8x8)</button>
+                <button class="game-diff-btn" data-diff="hard">Hard (10x10)</button>
+            </div>
+
+            <div class="game-container">
+                <div id="word-search-grid" class="grid-container"></div>
+                <div class="word-list">
+                    <h3>Find these words:</h3>
+                    <ul id="words-to-find"></ul>
+                </div>
+            </div>
+
+            <button id="new-game-btn" class="action-btn" style="margin-top: 20px;">New Game 🔄</button>
+        </div>
+
+        <!-- ═══════════════════════════════════
+             PROGRESS TAB
+        ════════════════════════════════════ -->
+        <div id="progress" class="tab-content">
+            <span class="eyebrow">Your History</span>
+            <h1>Progress</h1>
+
+            <div class="progress-toolbar">
+                <div class="mode-selector" id="progress-mode-filter">
+                    <button class="mode-btn active" data-mode="">All</button>
+                    <button class="mode-btn" data-mode="practice">Practice</button>
+                    <button class="mode-btn" data-mode="adults">Adults</button>
+                    <button class="mode-btn" data-mode="kids">Kids</button>
+                </div>
+                <button id="progress-reset-btn" class="secondary-btn">Reset History</button>
+            </div>
+
+            <div class="progress-stats-grid" id="progress-stats-grid"></div>
+
+            <div class="progress-chart-card">
+                <h3>Score over time</h3>
+                <div id="progress-chart"></div>
+            </div>
+
+            <div class="progress-history" id="progress-history-list"></div>
+        </div>
+
+    </div>
+
+    <!-- Word detail modal — filled in by utils.js -->
+    <div id="word-modal-root"></div>
+
+    <!-- Mascot (kids mode only) -->
+    <div class="mascot-container kids-only" id="mascot-container">
+        <div class="mascot-bubble" id="mascot-bubble">Hi! I'm Owlbert! 🦉</div>
+        <div class="mascot-img" onclick="mascotClick()">🦉</div>
+    </div>
+
+    <!-- Confetti -->
+    <canvas id="confetti-canvas" class="confetti"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/audio.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/practice.js"></script>
+    <script src="/static/js/adults.js"></script>
+    <script src="/static/js/kids.js"></script>
+    <script src="/static/js/games.js"></script>
+    <script src="/static/js/progress.js"></script>
+</body>
+
+</html>
